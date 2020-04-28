@@ -1,0 +1,22 @@
+body {
+  background-color: mediumpurple;
+  text-align: center;
+}
+
+.allDiv {
+  background-color: aquamarine;
+  text-align: center;
+  height: 30%; 
+  padding: 20px 0px 20px 0px;
+  font-weight: bold; 
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ; 
+margin-top: 200px;
+}
+
+.questionDiv {
+  display: none;
+}
+
+.hiddenResults {
+  display:none;
+}
