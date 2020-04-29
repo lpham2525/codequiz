@@ -1,8 +1,9 @@
 let clock = document.getElementById('clock')
-let count = 90
+let time = 90
 let score = 0
 let highScore = ' '
-let saveHighScore = document.getElementById('save')
+const saveHighScore = document.getElementById('saveBtn')
+const showHighScores = document.getElementById('showScore')
 const minutes = parseInt(60 / 60)
 const seconds = parseInt(60 % 60)
 const beginBtn = document.getElementById('btnOne')
@@ -61,29 +62,24 @@ const questions = [
       { text: `Id selectors override class selectors`, correct: false },
       { text: `Backticks, unlike using single quotes or double quotes, allow for code to be written on multiple lines`, correct: false },
       { text: `All variables in a ternary should be defined before an operation is created`, correct: false },
-      {
-        text: `Functions should be written with const, not let.`,
-        correct: false
-      }
+      { text: `Functions should be written with const, not let.`, correct: false }
     ]
   }
 ]
-const mostRecentScore = localStorage.getItem("mostRecentScore")
-// const highScores = JSON.parse(localStorage.getItem('highScores')) || []
-// console.log(highScores)
-
-// highScores.push(score)
-
 
 btnOne.addEventListener('click', beginQuiz)
 nextBtn.addEventListener('click', () => {
   currentQuestionIndex++
   setNextQuestion()
 })
-saveHighScore.addEventListener('click', () => {
+saveBtn.addEventListener('click', () => {
+  localStorage.setItem(name, `${score}`)
+  document.getElementById('highScoreDiv').textContent = 'Score saved!'
+})
+showScore.addEventListener('click', () => {
+  displayHighScores()
+})
 
-}
-)
 function beginQuiz() {
   score = 0
   beginBtn.classList.add('hide')
@@ -91,31 +87,25 @@ function beginQuiz() {
   shuffleQuestions = questions.sort(() => Math.random() - .5)
   currentQuestionIndex = 0
   questionHolderElem.classList.remove('hide')
-  timer()
+  setInterval(clockTick, 1000)
   setNextQuestion()
 }
 
-function timer() {
-  const getTime = () => {
-    let minutes = Math.floor(count / 60)
-    let seconds = count % 60
-    document.getElementById('clock').innerHTML = ("Time left: " + ` ${minutes} minutes, ${seconds} seconds`)
+function clockTick() {
+  let minutes = Math.floor(time / 60)
+  let seconds = time % 60
+  time--
+  clock.textContent = ("Time left: " + ` ${minutes} minutes, ${seconds} seconds`)
+  // check if user ran out of time
+  if (time <= 0) {
+    document.getElementById('clock').innerHTML = "Time is up!"
+    quizEnd();
   }
-  setInterval(() => {
-    count--
-    if (count === 0) {
-      return
-    }
-    getTime()
-  }, 1000)
 }
 
-function stopClock() {
-  if (count === 0) {
-    stopInterval(clock)
-    //also tried clearInterval, clearTimeout, stop(), and with clock and count
-    document.getElementById('clock').innerHTML = "Time is up!"
-  }
+function quizEnd() {
+  // stop timer
+  clearInterval(timerId)
 }
 
 function setNextQuestion() {
@@ -139,7 +129,6 @@ function showQuestion(question) {
 
 function resetState() {
   clearUp(document.body)
-  clearUp(alertElem)
   //unable to hide alertElem when new question is presented
   alertElem.classList.add('hide')
   nextBtn.classList.add('hide')
@@ -159,15 +148,14 @@ function pickAns(e) {
   if (shuffleQuestions.length > currentQuestionIndex + 1) {
     nextBtn.classList.remove('hide')
   } else {
-    //having trouble hiding alertElem, showing the btnOne as "Restart", putting in the right score, listing correct score, and stopping clock.
+    //having trouble hiding alertElem, showing the btnOne as "Restart", putting in the right score, listing correct score. Suggested: put interval timeout for alert.
     questionHolderElem.classList.add('hide')
     alertElem.classList.add('hide')
-    stopClock(count)
+    quizEnd()
     beginBtn.innerText = "Restart"
     beginBtn.classList.remove('hide')
     document.getElementById("results").textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
     saveHighScore.classList.remove('hide')
-
   }
 }
 
@@ -180,7 +168,7 @@ function points(element, correct) {
 
   } else {
     document.getElementById('alert').innerHTML = "Oh no! Correct answer not chosen!"
-    count -= 2
+    time -= 2
 
   }
 }
@@ -188,4 +176,10 @@ function points(element, correct) {
 function clearUp(element) {
   element.classList.remove('correct')
   element.classList.remove('wrong')
+}
+
+function displayHighScores() {
+  if (localStorage.getItem('score')) {
+    document.getElementById('highScoreDiv').textContent = `${localStorage.getItem('score')}`
+  }
 }

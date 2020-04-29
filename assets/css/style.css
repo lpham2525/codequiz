@@ -13,23 +13,16 @@ body {
   height: 30%;
   padding: 30px 50px 250px 50px;
   font-weight: bold;
-font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-}
-
-#questionHolder {
-  background-color: mediumpurple;
-  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .btn {
   background-color: skyblue
 }
 
-.hiddenResults {
-  display: none;
-}
-
 #questionHolder {
+  background-color: mediumpurple;
+  text-align: center;
   width: 800px;
   max-width: 80%;
   border-radius: 5px;
@@ -77,14 +70,32 @@ font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   background-color: tomato;
   margin: 0px 0px 400px 50px;
   text-align: center;
-display: block;
+  display: block;
 }
 
-#alert{
+#alert {
   display: inline-block;
   margin: 10px;
 }
 
-#save{
+#saveBtn {
   margin: 20px;
+}
+
+@media screen and (max-width: 576px) {
+  #clock {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  #divIntro {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card {
+    width: 150px;
+  }
 }
