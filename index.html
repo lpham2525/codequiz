@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Quiz</title>
+  <title>CodeQuiz</title>
   <link rel="stylesheet" href="./assets/css/reset.css">
   <link rel="stylesheet" href="./assets/css/style.css">
 </head>
+
 <body>
+  
   <div id="clock">
-    
+<p> Timer</p>
   </div>
-  <div id="quiz">
-
-  </>
-<div id="divIntro" class="allDiv">
-      
-          <h5>TIMED JAVASCRIPT QUIZ</h5>
-        <h2><ins>Instructions</ins></h2><br>
-        <p>You will be taking a timed quiz on basic Javascript concepts.<br> The quiz allows you 2 minutes to answer five
-          questions. <br>Choose the correct answer from the multiple choices. <br>If you answer correctly, you will proceed to
-          the next question. <br>If you answer incorrectly, ten seconds will be subtracted<br> from the timer before you proceed
-          to the next question.</p><br>
-        <button id="btnOne">Start Quiz</button>
-        </div>
-<div id="quiz">
-
-</div>
-<div>
-    <button id="submit"> Submit </button>
-</div>
-  <div id="results" class="hiddenResults">
-<p> Your results are: <span id='results-span'></span></p>
+  <div id="divIntro" class="allDiv">
+  
+    <h5>TIMED JAVASCRIPT QUIZ</h5>
+    <h2><ins>Instructions</ins></h2><br>
+    <p>This is a timed quiz on basic Javascript concepts.<br> The quiz allows 90 seconds to answer five
+      questions. <br>Choose the correct answer from the multiple choices. <br>If you answer correctly, you can proceed to
+      the next question. <br>If you answer incorrectly, ten seconds will be subtracted<br> from the timer before you
+     proceed
+      to the next question.</p><br>
+    <button id="btnOne" class="control-btn btn">Start Quiz</button>
   </div>
-
-<script src="./assets/javascript/script.js"></script>
-
-
-
-
-
- 
-</body>
-</html>
+  <div class="card">
+  <div id="questionHolder" class="hide">
+    <div id="question">Question</div>
+  <div id="answer-buttons" class="btn-grid">
+    <button class="btn">Answer A</button>
+    <button class="btn">Answer B</button>
+    <button class="btn">Answer C</button>
+    <button class="btn">Answer D</button>
+    <button class="btn">Answer E</button>
+  
+  </div>
+  </div>
+  <br>
+  <br>
+<div id="controls">
+          <button id="nextBtn" class="control-btn btn hide">Next Question</button>
+      </div>
+      </div>
+      <div id="alert" class="hide"> </div>
+  <div id="results"></div>
+  <div id="highscore">
+    <button id="save" class="hide">Save As High Score</button>
+  </div>
+  
+  <script src="./assets/javascript/script.js"></script>
+  
+  </body>
+  
+  </html>
