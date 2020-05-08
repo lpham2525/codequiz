@@ -14,6 +14,7 @@ const answerBtnsElem = document.getElementById('answer-buttons')
 const alertElem = document.getElementById('alert')
 let shuffleQuestions, currentQuestionIndex
 let results = document.getElementById('results')
+let timerId
 const questions = [
   {
     question: `What is "JSON parse" used for?`,
@@ -73,7 +74,7 @@ nextBtn.addEventListener('click', () => {
   setNextQuestion()
 })
 saveBtn.addEventListener('click', () => {
-  localStorage.setItem(name, `${score}`)
+  localStorage.setItem(score, `${score}`)
   document.getElementById('highScoreDiv').textContent = 'Score saved!'
 })
 showScore.addEventListener('click', () => {
@@ -82,12 +83,11 @@ showScore.addEventListener('click', () => {
 
 function beginQuiz() {
   score = 0
-  beginBtn.classList.add('hide')
   divIntro.classList.add('hide')
   shuffleQuestions = questions.sort(() => Math.random() - .5)
   currentQuestionIndex = 0
   questionHolderElem.classList.remove('hide')
-  setInterval(clockTick, 1000)
+  timerId = setInterval(clockTick, 1000)
   setNextQuestion()
 }
 
@@ -99,7 +99,9 @@ function clockTick() {
   // check if user ran out of time
   if (time <= 0) {
     document.getElementById('clock').innerHTML = "Time is up!"
-    quizEnd();
+    quizEnd()
+    questionHolderElem.classList.add('hide')
+    nextBtn.classList.add('hide')
   }
 }
 
@@ -119,9 +121,7 @@ function showQuestion(question) {
     const button = document.createElement('button')
     button.innerText = answer.text
     button.classList.add('btn')
-    if (answer.correct) {
-      button.dataset.correct = answer.correct
-    }
+    button.dataset.correct = answer.correct
     button.addEventListener('click', pickAns)
     answerBtnsElem.appendChild(button)
   })
@@ -130,7 +130,7 @@ function showQuestion(question) {
 function resetState() {
   clearUp(document.body)
   //unable to hide alertElem when new question is presented
-  alertElem.classList.add('hide')
+  alertElem.textContent = ''
   nextBtn.classList.add('hide')
   while (answerBtnsElem.firstChild) {
     answerBtnsElem.removeChild
@@ -138,22 +138,21 @@ function resetState() {
   }
 }
 
+
 function pickAns(e) {
   const selectedButton = e.target
-  const correct = selectedButton.dataset.correct
-  points(document.body, correct)
-  Array.from(answerBtnsElem.children).forEach(button => {
-    points(button, button.dataset.correct)
-  })
+  const correct = JSON.parse(selectedButton.dataset.correct)
+  console.log(selectedButton.dataset)
+  points(selectedButton, correct)
   if (shuffleQuestions.length > currentQuestionIndex + 1) {
     nextBtn.classList.remove('hide')
   } else {
     //having trouble hiding alertElem, showing the btnOne as "Restart", putting in the right score, listing correct score. Suggested: put interval timeout for alert.
     questionHolderElem.classList.add('hide')
-    alertElem.classList.add('hide')
+    alertElem.textContent = ''
     quizEnd()
     beginBtn.innerText = "Restart"
-    beginBtn.classList.remove('hide')
+    divIntro.classList.remove('hide')
     document.getElementById("results").textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
     saveHighScore.classList.remove('hide')
   }
