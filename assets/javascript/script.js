@@ -8,10 +8,12 @@ const minutes = parseInt(60 / 60)
 const seconds = parseInt(60 % 60)
 const beginBtn = document.getElementById('btnOne')
 const nextBtn = document.getElementById('nextBtn')
+const restartBtn = document.getElementById('restartBtn')
 const questionHolderElem = document.getElementById('questionHolder')
 const questionElement = document.getElementById('question')
 const answerBtnsElem = document.getElementById('answer-buttons')
 const alertElem = document.getElementById('alert')
+const displayScores = document.getElementById('highScores')
 let shuffleQuestions, currentQuestionIndex
 let results = document.getElementById('results')
 let timerId
@@ -69,17 +71,16 @@ const questions = [
 ]
 
 btnOne.addEventListener('click', beginQuiz)
+restartBtn.addEventListener('click', beginQuiz)
 nextBtn.addEventListener('click', () => {
   currentQuestionIndex++
   setNextQuestion()
 })
 saveBtn.addEventListener('click', () => {
-  localStorage.setItem(score, `${score}`)
-  document.getElementById('highScoreDiv').textContent = 'Score saved!'
+  localStorage.setItem('High Score', `${score}`)
+  displayScores.appendChild('Score saved!')
 })
-showScore.addEventListener('click', () => {
-  displayHighScores()
-})
+showScore.addEventListener('click', displayHighScores)
 
 function beginQuiz() {
   score = 0
@@ -92,6 +93,12 @@ function beginQuiz() {
   setNextQuestion()
   saveHighScore.classList.add('hide')
   showHighScores.classList.add('hide')
+  document.getElementById('results').innerHTML = ''
+}
+
+function quizEnd() {
+  // stop timer
+  clearInterval(timerId)
 }
 
 function clockTick() {
@@ -106,11 +113,6 @@ function clockTick() {
     questionHolderElem.classList.add('hide')
     nextBtn.classList.add('hide')
   }
-}
-
-function quizEnd() {
-  // stop timer
-  clearInterval(timerId)
 }
 
 function setNextQuestion() {
@@ -132,7 +134,6 @@ function showQuestion(question) {
 
 function resetState() {
   clearUp(document.body)
-  //unable to hide alertElem when new question is presented
   alertElem.textContent = ''
   nextBtn.classList.add('hide')
   while (answerBtnsElem.firstChild) {
@@ -142,37 +143,34 @@ function resetState() {
 }
 
 
-function pickAns(e) {
-  const selectedButton = e.target
+function pickAns(event) {
+  const selectedButton = event.target
   const correct = JSON.parse(selectedButton.dataset.correct)
   console.log(selectedButton.dataset)
   points(selectedButton, correct)
   if (shuffleQuestions.length > currentQuestionIndex + 1) {
     nextBtn.classList.remove('hide')
   } else {
-    //having trouble hiding alertElem, showing the btnOne as "Restart", putting in the right score, listing correct score. Suggested: put interval timeout for alert.
     questionHolderElem.classList.add('hide')
     alertElem.textContent = ''
     quizEnd()
-    beginBtn.innerText = "Restart Quiz"
+    beginBtn.innerText = 'Restart Quiz'
     divIntro.classList.remove('hide')
-    document.getElementById("divIntro").textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
+    restartBtn.classList.remove('hide')
     saveHighScore.classList.remove('hide')
     showHighScores.classList.remove('hide')
+    document.getElementById('results').textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
   }
 }
 
 function points(element, correct) {
   clearUp(element)
   if (correct) {
-    //score variable does not keep track of score correctly
     score++
     document.getElementById('alert').innerHTML = "You answered correctly!"
-
   } else {
     document.getElementById('alert').innerHTML = "Oh no! Correct answer not chosen!"
     time -= 2
-
   }
 }
 
@@ -183,6 +181,8 @@ function clearUp(element) {
 
 function displayHighScores() {
   if (localStorage.getItem('score')) {
-    document.getElementById('highScoreDiv').textContent = `${localStorage.getItem('score')}`
+    displayScores.appendChild(`${localStorage.getItem('score')}`)
   }
 }
+
+//stop user from pressing on an answer again once they clicked on something or for the score to be moved up by one only if the user clicked on the right answer once
