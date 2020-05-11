@@ -83,12 +83,15 @@ showScore.addEventListener('click', () => {
 
 function beginQuiz() {
   score = 0
+  time = 90
   divIntro.classList.add('hide')
   shuffleQuestions = questions.sort(() => Math.random() - .5)
   currentQuestionIndex = 0
   questionHolderElem.classList.remove('hide')
   timerId = setInterval(clockTick, 1000)
   setNextQuestion()
+  saveHighScore.classList.add('hide')
+  showHighScores.classList.add('hide')
 }
 
 function clockTick() {
@@ -151,10 +154,11 @@ function pickAns(e) {
     questionHolderElem.classList.add('hide')
     alertElem.textContent = ''
     quizEnd()
-    beginBtn.innerText = "Restart"
+    beginBtn.innerText = "Restart Quiz"
     divIntro.classList.remove('hide')
-    document.getElementById("results").textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
+    document.getElementById("divIntro").textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
     saveHighScore.classList.remove('hide')
+    showHighScores.classList.remove('hide')
   }
 }
 
