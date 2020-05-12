@@ -71,7 +71,7 @@ const questions = [
 ]
 
 btnOne.addEventListener('click', beginQuiz)
-restartBtn.addEventListener('click', beginQuiz)
+// restartBtn.addEventListener('click', beginQuiz)
 nextBtn.addEventListener('click', () => {
   currentQuestionIndex++
   setNextQuestion()
@@ -156,7 +156,6 @@ function pickAns(event) {
     quizEnd()
     beginBtn.innerText = 'Restart Quiz'
     divIntro.classList.remove('hide')
-    restartBtn.classList.remove('hide')
     saveHighScore.classList.remove('hide')
     showHighScores.classList.remove('hide')
     document.getElementById('results').textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
