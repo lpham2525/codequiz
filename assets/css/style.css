@@ -79,6 +79,10 @@ body {
   margin: 20px;
 }
 
+#highScores {
+  margin-top: 10px;
+}
+
 @media screen and (max-width: 576px) {
   #clock {
     width: 150px;

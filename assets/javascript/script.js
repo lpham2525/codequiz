@@ -78,7 +78,7 @@ nextBtn.addEventListener('click', () => {
 })
 saveBtn.addEventListener('click', () => {
   localStorage.setItem('High Score', `${score}`)
-  displayScores.appendChild('Score saved!')
+  displayScores.textContent = ('Score saved!')
 })
 showScore.addEventListener('click', displayHighScores)
 
@@ -93,7 +93,8 @@ function beginQuiz() {
   setNextQuestion()
   saveHighScore.classList.add('hide')
   showHighScores.classList.add('hide')
-  document.getElementById('results').innerHTML = ''
+  results.innerHTML = ''
+  displayScores.innerHTML = ''
 }
 
 function quizEnd() {
@@ -158,7 +159,9 @@ function pickAns(event) {
     divIntro.classList.remove('hide')
     saveHighScore.classList.remove('hide')
     showHighScores.classList.remove('hide')
-    document.getElementById('results').textContent = (`You scored ${score}. Do you want to save this score as your high score?`)
+    let child = document.createElement('div')
+    child.innerHTML = (`You scored ${score}. Do you want to save this score as your high score?`)
+    divIntro.appendChild(child);
   }
 }
 
@@ -180,7 +183,7 @@ function clearUp(element) {
 
 function displayHighScores() {
   if (localStorage.getItem('score')) {
-    displayScores.appendChild(`${localStorage.getItem('score')}`)
+    displayScores.textcontent = (`${localStorage.getItem('score')}`)
   }
 }
 
